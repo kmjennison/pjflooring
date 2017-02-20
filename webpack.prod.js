@@ -7,7 +7,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   entry: './src/js/app.js',
   output: {
-    filename: 'js/app.js',
+    filename: 'js/app.[chunkhash:8].js',
     path: path.resolve(__dirname, 'dist')
   },
   plugins: [
@@ -15,12 +15,8 @@ module.exports = {
       inject: true,
       template: './src/app.html',
     }),
-    new ExtractTextPlugin('./css/app.css'),
+    new ExtractTextPlugin('./css/app.[chunkhash:8].css'),
   ],
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    port: 9000
-  },
   module: {
     rules: [{
       test: /\.css$/,

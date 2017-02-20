@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server"
+    "build": "rm -Rf ./dist/* && webpack -p --config webpack.prod.js",
+    "build:dev": "rm -Rf ./dist/* && webpack",
+    "start": "webpack-dev-server",
+    "deploy": "npm run build",
+    "deploy:dev": "npm run build"
   },
   "author": "",
   "license": "ISC",
