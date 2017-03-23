@@ -88,7 +88,6 @@ gulp.task('dev', ['browserSync', 'less', 'minify-css', 'minify-js'], function() 
 });
 
 // Compiles SCSS files from /scss into /css
-// NOTE: This theme uses LESS by default. To swtich to SCSS you will need to update this gulpfile by changing the 'less' tasks to run 'sass'!
 gulp.task('sass', function() {
     return gulp.src('scss/agency.scss')
         .pipe(sass())
@@ -101,51 +100,41 @@ gulp.task('sass', function() {
 // Dist for production.
 
 gulp.task('images', function() {
+    // TODO: update CSS after adding hash to img file names
+    // See: https://github.com/galkinrost/gulp-rev-css-url
     gulp.src(['img/**/*']).pipe(gulp.dest('../dist/img'));
 });
 
-gulp.task('scripts', function() {
-    // gulp.src(['js/jqBootstrapValidation.js', 'js/contact_me.js', 'js/agency.min.js',])
-    gulp.src(['js/agency.min.js'])
+gulp.task('js', function() {
+    return gulp.src(['js/jqBootstrapValidation.js', 'js/contact_me.js', 'js/agency.min.js',])
         .pipe(concat('app.js'))
+        .pipe(uglify())
         .pipe(rev())
         .pipe(gulp.dest('../dist/js'))
-        .pipe(rev.manifest('rev-manifest.json'))
+        .pipe(rev.manifest('rev-manifest-js.json'))
         .pipe(gulp.dest('../dist'));
+});
 
-    gulp.src(['css/agency.min.css'])
+gulp.task('css', function() {
+    return gulp.src(['css/agency.min.css'])
         .pipe(concat('app.css'))
         .pipe(rev())
         .pipe(gulp.dest('../dist/css'))
         .pipe(rev.manifest('rev-manifest-css.json'))
         .pipe(gulp.dest('../dist'));
-        // // add CSS file revisions to same manifest
-        // .pipe(rev.manifest('rev-manifest.json', {
-        //     merge: true,
-        //     base: gulp.dest('../dist')
-        // }));
 });
 
 // Replace script references.
 gulp.task('revreplace', function() {
-  // var manifest = gulp.src('../dist/rev-manifest.json');
 
-  // return gulp.src('*.html')
-  //   .pipe(revReplace({manifest: manifest}))
-  //   .pipe(useref())
-  //   .pipe(gulp.dest('../dist/'));
-
-  // var manifest = gulp.src('../dist/rev-manifest.json');
-
-  var manifestJs = gulp.src('../dist/rev-manifest.json');
-
+  // Can also try: https://github.com/lazd/gulp-replace
   return gulp.src('*.html')
     .pipe(useref())
-    .pipe(revReplace({manifest: manifestJs}))
-    // .pipe(revReplace({manifest: gulp.src('../dist/rev-manifest-css.json')}))
+    .pipe(revReplace({manifest: gulp.src('../dist/rev-manifest-js.json')}))
+    .pipe(revReplace({manifest: gulp.src('../dist/rev-manifest-css.json')}))
     .pipe(gulp.dest('../dist'));
 });
 
-gulp.task('dist', ['less', 'minify-css', 'minify-js', 'scripts', 'images', 'revreplace'], function() {
+gulp.task('dist', ['less', 'minify-css', 'js', 'css', 'images', 'revreplace'], function() {
     console.log('Built!');
 });
