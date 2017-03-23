@@ -4,8 +4,12 @@ var sass = require('gulp-sass');
 var browserSync = require('browser-sync').create();
 var header = require('gulp-header');
 var cleanCSS = require('gulp-clean-css');
-var rename = require("gulp-rename");
+var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
+var rev = require('gulp-rev');
+var concat = require('gulp-concat');
+var useref = require('gulp-useref');
+var revReplace = require('gulp-rev-replace');
 
 // Compile LESS files from /less into /css
 gulp.task('less', function() {
@@ -92,4 +96,56 @@ gulp.task('sass', function() {
         .pipe(browserSync.reload({
             stream: true
         }))
+});
+
+// Dist for production.
+
+gulp.task('images', function() {
+    gulp.src(['img/**/*']).pipe(gulp.dest('../dist/img'));
+});
+
+gulp.task('scripts', function() {
+    // gulp.src(['js/jqBootstrapValidation.js', 'js/contact_me.js', 'js/agency.min.js',])
+    gulp.src(['js/agency.min.js'])
+        .pipe(concat('app.js'))
+        .pipe(rev())
+        .pipe(gulp.dest('../dist/js'))
+        .pipe(rev.manifest('rev-manifest.json'))
+        .pipe(gulp.dest('../dist'));
+
+    gulp.src(['css/agency.min.css'])
+        .pipe(concat('app.css'))
+        .pipe(rev())
+        .pipe(gulp.dest('../dist/css'))
+        .pipe(rev.manifest('rev-manifest-css.json'))
+        .pipe(gulp.dest('../dist'));
+        // // add CSS file revisions to same manifest
+        // .pipe(rev.manifest('rev-manifest.json', {
+        //     merge: true,
+        //     base: gulp.dest('../dist')
+        // }));
+});
+
+// Replace script references.
+gulp.task('revreplace', function() {
+  // var manifest = gulp.src('../dist/rev-manifest.json');
+
+  // return gulp.src('*.html')
+  //   .pipe(revReplace({manifest: manifest}))
+  //   .pipe(useref())
+  //   .pipe(gulp.dest('../dist/'));
+
+  // var manifest = gulp.src('../dist/rev-manifest.json');
+
+  var manifestJs = gulp.src('../dist/rev-manifest.json');
+
+  return gulp.src('*.html')
+    .pipe(useref())
+    .pipe(revReplace({manifest: manifestJs}))
+    // .pipe(revReplace({manifest: gulp.src('../dist/rev-manifest-css.json')}))
+    .pipe(gulp.dest('../dist'));
+});
+
+gulp.task('dist', ['less', 'minify-css', 'minify-js', 'scripts', 'images', 'revreplace'], function() {
+    console.log('Built!');
 });
