@@ -10,23 +10,35 @@ var rev = require('gulp-rev');
 var concat = require('gulp-concat');
 var useref = require('gulp-useref');
 var revReplace = require('gulp-rev-replace');
+var clean = require('gulp-clean');
+var runSequence = require('run-sequence');
 
 // Compile LESS files from /less into /css
 gulp.task('less', function() {
     return gulp.src('src/less/agency.less')
         .pipe(less())
-        .pipe(gulp.dest('src/css'))
+        .pipe(gulp.dest('src/css/'))
         .pipe(browserSync.reload({
             stream: true
         }))
 });
+
+// // Compiles SCSS files from /scss into /css
+// gulp.task('sass', function() {
+//     return gulp.src('src/css/agency.scss')
+//         .pipe(sass())
+//         .pipe(gulp.dest('src/css'))
+//         .pipe(browserSync.reload({
+//             stream: true
+//         }))
+// });
 
 // Minify compiled CSS
 gulp.task('minify-css', ['less'], function() {
     return gulp.src('src/css/agency.css')
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('src/css'))
+        .pipe(gulp.dest('src/css/'))
         .pipe(browserSync.reload({
             stream: true
         }))
@@ -37,7 +49,7 @@ gulp.task('minify-js', function() {
     return gulp.src('src/js/agency.js')
         .pipe(uglify())
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('js'))
+        .pipe(gulp.dest('src/js'))
         .pipe(browserSync.reload({
             stream: true
         }))
@@ -65,9 +77,6 @@ gulp.task('copy', function() {
         .pipe(gulp.dest('lib/font-awesome'))
 })
 
-// Run everything
-gulp.task('default', ['less', 'minify-css', 'minify-js', 'copy']);
-
 // Configure the browserSync task
 gulp.task('browserSync', function() {
     browserSync.init({
@@ -87,54 +96,64 @@ gulp.task('dev', ['browserSync', 'less', 'minify-css', 'minify-js'], function() 
     gulp.watch('src/js/**/*.js', browserSync.reload);
 });
 
-// Compiles SCSS files from /scss into /css
-gulp.task('sass', function() {
-    return gulp.src('src/css/agency.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('src/css'))
-        .pipe(browserSync.reload({
-            stream: true
-        }))
-});
 
 // Dist for production.
+
+gulp.task('clean-dist', function () {
+    return gulp.src('dist', {read: false})
+        .pipe(clean());
+});
 
 gulp.task('images', function() {
     // TODO: update CSS after adding hash to img file names
     // See: https://github.com/galkinrost/gulp-rev-css-url
-    gulp.src(['img/**/*']).pipe(gulp.dest('./dist/img'));
+    gulp.src(['src/img/**/*'], {base:'src/'}).pipe(gulp.dest('dist'));
 });
 
 gulp.task('js', function() {
-    return gulp.src(['src/js/jqBootstrapValidation.js', 'src/js/contact_me.js', 'src/js/agency.min.js',])
+    return gulp.src([
+            'src/js/jqBootstrapValidation.js',
+            'src/js/contact_me.js',
+            'src/js/agency.min.js'
+        ], {base:'src/'})
         .pipe(concat('app.js'))
         .pipe(uglify())
         .pipe(rev())
-        .pipe(gulp.dest('./dist/js'))
+        .pipe(gulp.dest('dist/js'))
         .pipe(rev.manifest('rev-manifest-js.json'))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('css', function() {
-    return gulp.src(['src/css/agency.min.css'])
+    return gulp.src(['src/css/agency.min.css'], {base:'src/'})
         .pipe(concat('app.css'))
         .pipe(rev())
-        .pipe(gulp.dest('./dist/css'))
+        .pipe(gulp.dest('dist/css'))
         .pipe(rev.manifest('rev-manifest-css.json'))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('copy-lib', function() {
+    return gulp.src(['src/lib/**'])
+        .pipe(gulp.dest('dist/lib'));
 });
 
 // Replace script references.
 gulp.task('revreplace', function() {
 
   // Can also try: https://github.com/lazd/gulp-replace
-  return gulp.src('*.html')
+  return gulp.src('src/*.html')
     .pipe(useref())
-    .pipe(revReplace({manifest: gulp.src('./dist/rev-manifest-js.json')}))
-    .pipe(revReplace({manifest: gulp.src('./dist/rev-manifest-css.json')}))
-    .pipe(gulp.dest('./dist'));
+    .pipe(revReplace({manifest: gulp.src('dist/rev-manifest-js.json')}))
+    .pipe(revReplace({manifest: gulp.src('dist/rev-manifest-css.json')}))
+    .pipe(gulp.dest('dist'));
 });
 
-gulp.task('dist', ['less', 'minify-css', 'js', 'css', 'images', 'revreplace'], function() {
-    console.log('Built!');
+
+gulp.task('dist', function(callback) {
+    runSequence(
+        'clean-dist',
+        ['less', 'minify-css', 'js', 'css', 'images', 'copy-lib'],
+        'revreplace'
+    );
 });
