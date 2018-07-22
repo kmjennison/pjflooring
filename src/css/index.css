@@ -10,3 +10,14 @@ header {
   text-align: center;
   color: white;
 }
+
+.wisconsin-home-indent {
+  flex: 1;
+}
+.wisconsin-home {
+  flex: 5;
+}
+.wisconsin-home img {
+  width: 80px;
+  height: 80px;
+}

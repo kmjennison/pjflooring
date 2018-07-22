@@ -515,6 +515,39 @@ section .subheading-bright-color {
 .team-member p {
   margin-top: 0;
 }
+.about-me-description {
+  padding: 10px;
+}
+.about-me-description > h4 {
+  text-transform: none;
+  margin-bottom: 20px;
+}
+.about-me-list {
+  padding-left: 10px;
+}
+.about-me-list div {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.about-me-list span {
+  display: block;
+  font-size: 18px;
+  margin-right: 10px;
+  flex: 1;
+}
+.about-me-list-text {
+  flex: 5;
+  line-height: 140%;
+  margin-bottom: 0px;
+}
+.customer-quote {
+  padding: 20px;
+  margin: 10px;
+  background: #f7f7f7;
+  border-radius: 3px;
+}
 aside.clients img {
   margin: 50px auto;
 }
