@@ -254,6 +254,9 @@ section h3.section-subheading {
   font-weight: 400;
   margin-bottom: 75px;
 }
+section .subheading-bright-color {
+  color: white;
+}
 @media (min-width: 768px) {
   section {
     padding: 150px 0;
@@ -517,12 +520,31 @@ aside.clients img {
 }
 section#contact {
   background-color: #222222;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/madison.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../img/madison.jpg');
   background-position: top;
   background-repeat: no-repeat;
 }
 section#contact .section-heading {
   color: white;
+}
+section#contact .contact-info {
+  color: white;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+}
+section#contact .contact-option {
+  display: flex;
+  justify-content: flex-start;
+}
+section#contact .contact-method {
+  margin-right: 10px;
+}
+section#contact .contact-detail {
+  text-transform: none;
 }
 section#contact .form-group {
   margin-bottom: 25px;
