@@ -21,3 +21,6 @@ header {
   width: 80px;
   height: 80px;
 }
+.portfolio-collage {
+  visibility: 'hidden';
+}

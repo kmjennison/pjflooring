@@ -38,15 +38,17 @@
         var collagePlusElemSelector = '.portfolio-collage'
         // Here we apply the actual CollagePlus plugin
         function collage() {
-            $(collagePlusElemSelector).collagePlus(
+            $(collagePlusElemSelector).removeWhitespace().collagePlus(
                 {
                     // change this to adjust the height of the rows
-                    'targetHeight' : 200,
+                    targetHeight : 260,
                     // change this to try different effects
                     // valid effets = effect-1 to effect-6
-                    'effect' : "effect-1"
+                    effect : "effect-1",
+                    allowPartialLastRow: true
                 }
             );
+            $(collagePlusElemSelector).css('visibility', 'visible')
         };
         // This is just for the case that the browser window is resized
         var resizeTimer = null;
