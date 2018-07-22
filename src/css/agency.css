@@ -581,6 +581,24 @@ footer span.copyright {
   text-transform: uppercase;
   text-transform: none;
 }
+footer div.contact {
+  font-size: 90%;
+  text-align: left;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  text-transform: none;
+}
+footer .proudly-working-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+footer div.proudly-working {
+  font-size: 90%;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  text-transform: none;
+}
 footer ul.quicklinks {
   font-size: 90%;
   margin-bottom: 0;
