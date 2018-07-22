@@ -33,6 +33,8 @@
     "url": "https://github.com/BlackrockDigital/startbootstrap-agency.git"
   },
   "scripts": {
-    "build": "rm -rf ./dist && cd ./src && gulp dist"
+    "build": "rm -rf ./dist && cd ./src && gulp dist",
+    "deploy": "bash ./deploy.sh",
+    "develop": "gulp dev"
   }
 }
