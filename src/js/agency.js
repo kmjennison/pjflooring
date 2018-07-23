@@ -32,8 +32,13 @@
         }
     });
 
-    // BEGIN: collagePlus JQuery plugin
+})(jQuery); // End of use strict
 
+// BEGIN: collagePlus JQuery plugin
+
+// All images need to be loaded for this plugin to work so
+// we end up waiting for the whole window to load in this example
+$(window).on('load', function () {
     $(document).ready(function(){
         var collagePlusElemSelector = '.portfolio-collage'
         // Here we apply the actual CollagePlus plugin
@@ -60,6 +65,5 @@
 
         collage();
     });
-    // END: collagePlus JQuery plugin
-
-})(jQuery); // End of use strict
+});
+// END: collagePlus JQuery plugin
