@@ -1,8 +1,6 @@
 // Agency Theme JavaScript
 
-(function($) {
-    "use strict"; // Start of use strict
-
+$(document).ready(function(){
     // jQuery for page scrolling feature - requires jQuery Easing plugin
     $('a.page-scroll').bind('click', function(event) {
         var $anchor = $(this);
@@ -31,8 +29,7 @@
             $("#mainNav").removeClass("navbar-shrink");
         }
     });
-
-})(jQuery); // End of use strict
+});
 
 // BEGIN: collagePlus JQuery plugin
 
