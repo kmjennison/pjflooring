@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: http://prjflooring.co/sitemap.xml
+Host: http://prjflooring.co

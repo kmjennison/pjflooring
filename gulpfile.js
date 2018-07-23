@@ -138,6 +138,12 @@ gulp.task('copy-lib', function() {
         .pipe(gulp.dest('dist/lib'));
 });
 
+// Copy things like robots.txt and sitemap
+gulp.task('copy-misc', function() {
+    return gulp.src(['src/robots.txt', 'src/sitemap.xml'])
+        .pipe(gulp.dest('dist'));
+});
+
 // Replace script references.
 gulp.task('revreplace', function() {
 
@@ -153,7 +159,7 @@ gulp.task('revreplace', function() {
 gulp.task('dist', function(callback) {
     runSequence(
         'clean-dist',
-        ['less', 'minify-css', 'js', 'css', 'images', 'copy-lib'],
+        ['less', 'minify-css', 'js', 'css', 'images', 'copy-lib', 'copy-misc'],
         'revreplace'
     );
 });
