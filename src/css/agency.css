@@ -266,6 +266,10 @@ section .subheading-bright-color {
   margin: 15px 0;
   text-transform: none;
 }
+.service-item {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 #portfolio .portfolio-item {
   margin: 0 0 15px;
   right: 0;
