@@ -1,2 +1,2 @@
-# pjflooring
-Website for [PJ Flooring](http://pjflooring.construction/)
+# PRJ Flooring
+Website for [PRJ Flooring](http://prjflooring.co/).
