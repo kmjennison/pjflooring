@@ -34,7 +34,7 @@
   },
   "scripts": {
     "build": "rm -rf ./dist && cd ./src && gulp dist",
-    "deploy": "bash ./deploy.sh",
+    "deploy": "yarn run build && bash ./deploy.sh",
     "develop": "gulp dev"
   }
 }

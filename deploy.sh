@@ -15,8 +15,10 @@ if [ "$1" = "" ]; then
   exit
 fi 
 
+echo "=========================================="
 echo "Going to deploy to $STAGE at $S3_BUCKET."
 echo "Is this OK? [y/n]"
+echo "=========================================="
 read response
 if [ $response != "y" ]; then
   echo "Exiting."
