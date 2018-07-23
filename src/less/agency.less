@@ -126,11 +126,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 header {
-    background-image: url('../img/header-bg.jpg');
+    background:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../img/wood.jpg');
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: center center;
-    .background-cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
     text-align: center;
     color: white;
     .intro-text {
@@ -512,6 +515,19 @@ section {
     flex: 5;
     line-height: 140%;
     margin-bottom: 0px;
+}
+.wisconsin-home-indent {
+  flex: 1;
+}
+.wisconsin-home {
+  flex: 5;
+}
+.wisconsin-home img {
+  width: 80px;
+  height: 80px;
+}
+.portfolio-collage {
+  visibility: 'hidden';
 }
 .customer-quote {
     padding: 20px;
