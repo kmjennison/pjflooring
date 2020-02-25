@@ -9,7 +9,7 @@ var uglify = require('gulp-uglify');
 var rev = require('gulp-rev');
 var concat = require('gulp-concat');
 var useref = require('gulp-useref');
-var revReplace = require('gulp-rev-replace');
+var revRewrite = require('gulp-rev-rewrite');
 var clean = require('gulp-clean');
 
 // Compile LESS files from /less into /css
@@ -142,18 +142,16 @@ gulp.task('copy-misc', function copyMiscFiles() {
 });
 
 // Replace script references.
-gulp.task('revreplace', function revReplace() {
-
-  // Can also try: https://github.com/lazd/gulp-replace
-  return gulp.src('src/*.html')
-    .pipe(useref())
-    .pipe(revReplace({manifest: gulp.src('dist/rev-manifest-js.json')}))
-    .pipe(revReplace({manifest: gulp.src('dist/rev-manifest-css.json')}))
-    .pipe(gulp.dest('dist'));
+gulp.task('rev-rewrite', function revRewrite() {
+    return gulp.src('src/*.html')
+        .pipe(useref())
+        .pipe(revRewrite({manifest: gulp.src('dist/rev-manifest-js.json')}))
+        .pipe(revRewrite({manifest: gulp.src('dist/rev-manifest-css.json')}))
+        .pipe(gulp.dest('dist'));
 });
 
 
 gulp.task('dist', gulp.series('clean-dist',
     gulp.parallel('less', 'minify-css', 'js', 'css', 'images', 'copy-lib', 'copy-misc'),
-    'revreplace'
+    'rev-rewrite'
 ));
