@@ -86,7 +86,7 @@ gulp.task('browserSync', function devBrowser() {
 })
 
 // Dev task with browserSync
-gulp.task('dev', gulp.series('browserSync', 'less', 'minify-css', 'minify-js', function runDevServer() {
+gulp.task('dev', gulp.series(gulp.parallel('browserSync', 'less', 'minify-css', 'minify-js'), function runDevServer() {
     gulp.watch('src/less/*.less', ['less']);
     gulp.watch('src/css/*.css', ['minify-css']);
     gulp.watch('src/js/*.js', ['minify-js']);
@@ -99,20 +99,18 @@ gulp.task('dev', gulp.series('browserSync', 'less', 'minify-css', 'minify-js', f
 // Dist for production.
 
 gulp.task('clean-dist', function cleanDistFolder() {
-    return gulp.src('dist', {read: false})
+    return gulp.src('dist', { read: false, allowEmpty: true })
         .pipe(clean());
 });
 
 gulp.task('images', function handleImages() {
     // TODO: update CSS after adding hash to img file names
     // See: https://github.com/galkinrost/gulp-rev-css-url
-    gulp.src(['src/img/**/*'], {base:'src/'}).pipe(gulp.dest('dist'));
+    return gulp.src(['src/img/**/*'], {base:'src/'}).pipe(gulp.dest('dist'));
 });
 
 gulp.task('js', function handleJS () {
     return gulp.src([
-            'src/js/jqBootstrapValidation.js',
-            'src/js/contact_me.js',
             'src/js/agency.min.js'
         ], {base:'src/'})
         .pipe(concat('app.js'))
@@ -155,11 +153,7 @@ gulp.task('revreplace', function revReplace() {
 });
 
 
-gulp.task('dist', function dist (done) {
-    gulp.series(
-        'clean-dist',
-        gulp.parallel('less', 'minify-css', 'js', 'css', 'images', 'copy-lib', 'copy-misc'),
-        'revreplace',
-    );
-    done()
-});
+gulp.task('dist', gulp.series('clean-dist',
+    gulp.parallel('less', 'minify-css', 'js', 'css', 'images', 'copy-lib', 'copy-misc'),
+    'revreplace'
+));
