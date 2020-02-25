@@ -142,7 +142,7 @@ gulp.task('copy-misc', function copyMiscFiles() {
 });
 
 // Replace script references.
-gulp.task('rev-rewrite', function revRewrite() {
+gulp.task('rev-rewrite', function revRewriteTask() {
     return gulp.src('src/*.html')
         .pipe(useref())
         .pipe(revRewrite({manifest: gulp.src('dist/rev-manifest-js.json')}))
